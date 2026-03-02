@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Posh Kebap Admin Paneli</title>
+
+<style>
+body{
+font-family:Arial;
+background:#f4f4f4;
+padding:30px;
+}
+
+.panel{
+max-width:500px;
+margin:auto;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+input,button{
+width:100%;
+padding:10px;
+margin-top:10px;
+}
+
+button{
+background:#e09e37;
+border:none;
+color:white;
+cursor:pointer;
+}
+</style>
+
+</head>
+<body>
+
+<div class="panel">
+
+<h2>Admin Giriş</h2>
+
+<input type="password" id="password" placeholder="Şifre">
+
+<button onclick="login()">Giriş</button>
+
+<div id="adminArea" style="display:none">
+
+<h3>Yorumları Yönet</h3>
+
+<div id="reviews"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const ADMIN_PASSWORD = "12345";
+
+function login(){
+
+const pass=document.getElementById("password").value;
+
+if(pass===ADMIN_PASSWORD){
+
+document.getElementById("adminArea").style.display="block";
+
+loadReviews();
+
+}
+else{
+alert("Yanlış şifre");
+}
+
+}
+
+function loadReviews(){
+
+let reviews=JSON.parse(localStorage.getItem("reviews")||"[]");
+
+let html="";
+
+reviews.forEach((r,i)=>{
+
+html+=`
+<div style="border:1px solid gray;margin:5px;padding:5px">
+
+${r.nick} - ${r.text}
+
+<button onclick="deleteReview(${i})">
+Sil
+</button>
+
+</div>
+`;
+
+});
+
+document.getElementById("reviews").innerHTML=html;
+
+}
+
+function deleteReview(index){
+
+let reviews=JSON.parse(localStorage.getItem("reviews"));
+
+reviews.splice(index,1);
+
+localStorage.setItem("reviews",JSON.stringify(reviews));
+
+loadReviews();
+
+}
+
+</script>
+
+</body>
+</html>
