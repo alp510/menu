@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Posh Kebap - QR Menü</title>
+
+<style>
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background:#fdf6f0;
+  margin:0;
+  padding:0;
+}
+
+.container {
+  max-width:800px;
+  margin:20px auto;
+  padding:0 15px;
+}
+
+h1 {
+  text-align:center;
+  color:#e09e37;
+  margin-bottom:20px;
+}
+
+.menu-category {
+  margin-top:15px;
+  cursor:pointer;
+  background:#fff;
+  padding:15px;
+  border-radius:10px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+.menu-category:hover {
+  background:#ffe0b2;
+}
+
+.menu-items {
+  display:none;
+  margin-top:10px;
+}
+
+.menu-item {
+  background:#fff;
+  margin:8px 0;
+  padding:12px;
+  border-radius:10px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.1);
+}
+
+.title {
+  font-weight:bold;
+  font-size:18px;
+}
+
+.price {
+  color:#e09e37;
+  font-weight:bold;
+}
+
+.desc {
+  display:none;
+  margin-top:5px;
+  color:#555;
+}
+
+button {
+  margin-top:5px;
+  padding:5px 10px;
+  border:none;
+  background:#e09e37;
+  color:white;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+.review-section {
+  margin-top:40px;
+  background:white;
+  padding:15px;
+  border-radius:10px;
+}
+
+.review-item {
+  border-bottom:1px solid #ddd;
+  padding:5px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>Posh Kebap Restoran Menüsü</h1>
+
+<div class="menu-category">
+<h2>Çorbalar</h2>
+<div class="menu-items" id="corba-items"></div>
+</div>
+
+<div class="menu-category">
+<h2>Ana Yemekler</h2>
+<div class="menu-items" id="ana-items"></div>
+</div>
+
+<div class="menu-category">
+<h2>Mezeler</h2>
+<div class="menu-items" id="meze-items"></div>
+</div>
+
+<div class="menu-category">
+<h2>İçecekler</h2>
+<div class="menu-items" id="icecek-items"></div>
+</div>
+
+<div class="menu-category">
+<h2>Alkollü İçecekler</h2>
+<div class="menu-items" id="alkol-items"></div>
+</div>
+
+
+<div class="review-section">
+
+<h2>Yorum Yap</h2>
+
+<input id="nickname" placeholder="İsminiz">
+
+<select id="rating">
+<option value="5">★★★★★</option>
+<option value="4">★★★★</option>
+<option value="3">★★★</option>
+<option value="2">★★</option>
+<option value="1">★</option>
+</select>
+
+<textarea id="review-text" placeholder="Yorum"></textarea>
+
+<button id="submit-review">Gönder</button>
+
+<div id="review-list"></div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const menu = {
+
+corba:[
+{name:"Mercimek Çorbası",desc:"Taze mercimek çorbası",price:"120 TL"},
+{name:"Ezogelin Çorbası",desc:"Baharatlı ezogelin",price:"120 TL"},
+{name:"Tavuk Çorbası",desc:"Tavuk suyu çorbası",price:"120 TL"}
+],
+
+ana:[
+{name:"Adana Kebap",desc:"Közlenmiş biber ve lavaş ile",price:"220 TL"},
+{name:"Boru Kebap",desc:"Özel marine edilmiş",price:"230 TL"},
+{name:"Şiş Kebap",desc:"Izgara şiş kebap",price:"210 TL"},
+{name:"Adana Dürüm",desc:"Lavaş içinde servis",price:"85 TL"},
+{name:"Urfa Kebap",desc:"Acısız kebap",price:"225 TL"},
+{name:"Adana Kebap Menü",desc:"Ayran ve salata dahil",price:"260 TL"}
+],
+
+meze:[
+{name:"Humus",desc:"Nohut ve tahin",price:"50 TL"},
+{name:"Ezme",desc:"Acılı ezme",price:"45 TL"},
+{name:"Haydari",desc:"Yoğurt mezesi",price:"40 TL"}
+],
+
+icecek:[
+{name:"Ayran",desc:"Soğuk ayran",price:"50 TL"},
+{name:"Şalgam",desc:"Acılı şalgam",price:"40 TL"},
+{name:"Kola",desc:"Soğuk kola",price:"40 TL"}
+],
+
+alkol:[
+{name:"Rakı Duble",desc:"35 cl",price:"900 TL"},
+{name:"Rakı Şişe",desc:"70 cl",price:"1800 TL"},
+{name:"Efes",desc:"50 cl",price:"150 TL"}
+]
+
+};
+
+function loadMenu(list,id){
+
+const container=document.getElementById(id);
+
+list.forEach(item=>{
+
+const div=document.createElement("div");
+
+div.className="menu-item";
+
+div.innerHTML=`
+<div class="title">${item.name}</div>
+<div class="price">${item.price}</div>
+<div class="desc">${item.desc}</div>
+<button>Detay</button>
+`;
+
+const btn=div.querySelector("button");
+
+const desc=div.querySelector(".desc");
+
+btn.onclick=()=>{
+desc.style.display=desc.style.display=="block"?"none":"block";
+};
+
+container.appendChild(div);
+
+});
+
+}
+
+loadMenu(menu.corba,"corba-items");
+loadMenu(menu.ana,"ana-items");
+loadMenu(menu.meze,"meze-items");
+loadMenu(menu.icecek,"icecek-items");
+loadMenu(menu.alkol,"alkol-items");
+
+
+document.querySelectorAll(".menu-category").forEach(cat=>{
+
+cat.onclick=()=>{
+
+const items=cat.querySelector(".menu-items");
+
+items.style.display=items.style.display=="block"?"none":"block";
+
+};
+
+});
+
+
+let storedReviews=JSON.parse(localStorage.getItem("reviews")||"[]");
+
+const reviewList=document.getElementById("review-list");
+
+storedReviews.forEach(addReviewToList);
+
+
+document.getElementById("submit-review").onclick=()=>{
+
+const nick=document.getElementById("nickname").value||"Anonim";
+
+const text=document.getElementById("review-text").value;
+
+const rating=document.getElementById("rating").value;
+
+const time=new Date().toLocaleString();
+
+const review={nick,text,rating,time};
+
+storedReviews.push(review);
+
+localStorage.setItem("reviews",JSON.stringify(storedReviews));
+
+addReviewToList(review);
+
+};
+
+
+function addReviewToList(r){
+
+const div=document.createElement("div");
+
+div.className="review-item";
+
+div.innerHTML=`
+${r.nick} - ${r.time}<br>
+${"★".repeat(r.rating)}<br>
+${r.text}
+`;
+
+reviewList.prepend(div);
+
+}
+
+</script>
+
+</body>
+</html>
